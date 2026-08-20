@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCFolia 잡담 있는 로그 출력기</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="app">
+    <header class="app__header">
+      <h1>CCFolia 잡담 있는 로그 출력기</h1>
+      <p class="app__subtitle">CCFolia에서 export logs 기능으로 내보낸 html 파일을 올려주세요.</p>
+    </header>
+
+    <!-- Drop zone doubles as the file picker trigger -->
+    <section id="dropzone" class="dropzone" tabindex="0" role="button"
+      aria-label="Drop files here or click to choose files">
+      <input id="file-input" class="dropzone__input" type="file" hidden />
+      <div class="dropzone__inner">
+        <span class="dropzone__icon" aria-hidden="true">⬇</span>
+        <p class="dropzone__text">Drag &amp; drop an HTML file here</p>
+        <p class="dropzone__hint">or click to choose</p>
+      </div>
+    </section>
+
+    <!-- Selected-files list -->
+    <section id="filelist-section" class="filelist-section" hidden>
+      <h2 class="section-title">선택한 파일</h2>
+      <ul id="filelist" class="filelist"></ul>
+    </section>
+
+    <div class="actions">
+      <button id="run-btn" class="btn btn--primary" disabled>출력!</button>
+      <button id="download-md" class="btn" disabled>마크다운 파일 다운로드</button>
+      <button id="download-html" class="btn" disabled>html 파일 다운로드</button>
+      <button id="clear-btn" class="btn btn--ghost" disabled>비우기</button>
+    </div>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <!-- Tabs found in the file; untick one to exclude it from the output -->
+    <section id="tabs-section" class="tabs-section" hidden>
+      <h2 class="section-title">발견한 탭</h2>
+      <p class="tabs-hint">체크박스를 해제한 탭은 출력하지 않습니다.</p>
+      <div id="tabs" class="tabs"></div>
+    </section>
+
+    <!-- Results -->
+    <section id="results-section" class="results-section" hidden>
+      <div class="results-header">
+        <h2 class="section-title">미리보기</h2>
+        <div class="view-toggle" role="group" aria-label="Preview mode">
+          <button id="view-rendered" class="btn btn--toggle is-active" type="button">html</button>
+          <button id="view-source" class="btn btn--toggle" type="button">마크다운</button>
+        </div>
+      </div>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
+
+  <script src="vendor/marked.min.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
