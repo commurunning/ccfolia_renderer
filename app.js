@@ -141,8 +141,9 @@ function buildBody(entries, excludedTabs) {
 }
 
 function wrapBody(body) {
-  // Blank lines around the tags let the Markdown processor parse the inner content.
-  return `<section class="commentedLog">\n\n${body}\n\n</section>`;
+  const enabled = els.toggleCommentedLog?.checked ?? true;
+  const className = enabled ? ' class="commentedLog"' : "";
+  return `<section${className}>\n\n${body}\n\n</section>`;
 }
 
 function frontMatter(title, pubDate) {
@@ -206,6 +207,7 @@ const els = {
   results: document.getElementById("results"),
   viewRendered: document.getElementById("view-rendered"),
   viewSource: document.getElementById("view-source"),
+  toggleCommentedLog: document.getElementById("toggle-commented-log"),
 };
 
 let selectedFile = null;   // one File at a time
@@ -545,15 +547,16 @@ body{margin:0;background:var(--bg);color:var(--text-primary);font-family:var(--s
 .md-title{font-size:1.15rem;font-weight:500;letter-spacing:-.02em}
 .md-date{color:var(--text-secondary);font-size:.8125rem;margin-top:.15rem}
 .prose name{color:var(--text-secondary);margin-right:1em}
-.prose .commentedLog{display:grid;grid-auto-columns:calc(50% - 1rem) calc(50% - 1rem);column-gap:2rem}
 @media (max-width:768px){.prose .commentedLog{display:block}}
+.prose p.comment{background:var(--code-bg);border-radius:1em 1em 0 1em;padding:.25em .75em;color:var(--text-secondary)}
+.prose p.comment name{color:var(--text-tertiary)}
+.prose p.comment.secret{background-color:var(--mark)}
+.prose p.system{border-left:2px solid var(--border);margin:0 0 .5em .125em;padding:0 0 0 1.375em;color:var(--text-secondary)}
+.prose .commentedLog{display:grid;grid-auto-columns:calc(50% - 1rem) calc(50% - 1rem);column-gap:2rem}
 .prose .commentedLog p{margin:.5em 0;height:fit-content}
 .prose .commentedLog>p:not(.comment){grid-column-start:1;grid-column-end:2}
 .prose .commentedLog>p.system{grid-column-start:2}
-.prose .commentedLog>p.comment{grid-column-start:2;background:var(--code-bg);border-radius:1em 1em 0 1em;padding:.25em .75em;color:var(--text-secondary)}
-.prose .commentedLog p.comment name{color:var(--text-tertiary)}
-.prose .commentedLog>p.comment.secret{background-color:var(--mark)}
-.prose p.system{border-left:2px solid var(--border);margin:0 0 .5em .125em;padding:0 0 0 1.375em;color:var(--text-secondary)}
+.prose .commentedLog>p.comment{grid-column-start:2}
 `;
 
 function buildExportHtml(fullMarkdown, title) {
@@ -631,6 +634,7 @@ els.downloadHtml.addEventListener("click", downloadHtml);
 els.clearBtn.addEventListener("click", clearAll);
 els.viewRendered.addEventListener("click", () => setView("rendered"));
 els.viewSource.addEventListener("click", () => setView("source"));
+els.toggleCommentedLog.addEventListener("change", () => { convert() });
 
 window.addEventListener("dragover", (e) => e.preventDefault());
 window.addEventListener("drop", (e) => e.preventDefault());
