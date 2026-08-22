@@ -52,7 +52,7 @@ function commentLine(text, newName, cname, isComment, isSecret) {
   // invisible characters that .trim() leaves behind but render as nothing.
   if (!text || text.replace(/[\s​‌‍⁠﻿]/g, "") === "") return;
   if (cname === "system") return `<p class="system">${text}</p>`;
-  const nameslot = newName ? `<name>${cname.trim()}</name>` : '';
+  const nameslot = newName ? `<name>${isComment ? cname.trim() : escapeMarkdown(cname.trim())}</name>` : '';
   if (isSecret) return `<p class="comment secret">${nameslot}${text}</p>`;
   return isComment
     ? `<p class="comment">${nameslot}${text}</p>`
